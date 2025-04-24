@@ -1,0 +1,6 @@
+../Core/Src/main.c:12:5:main	5
+../Core/Src/main.c:45:6:I2C1_Init	1
+../Core/Src/main.c:60:6:I2C1_Write	5
+../Core/Src/main.c:76:6:I2C1_Read	6
+../Core/Src/main.c:95:6:LED_Blink	2
+../Core/Src/main.c:102:6:delay_ms	2

@@ -1,0 +1,769 @@
+
+spi_slave.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   00000198  08000000  08000000  00001000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         00000398  08000198  08000198  00001198  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000010  08000530  08000530  00001530  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .ARM.extab    00000000  08000540  08000540  00002004  2**0
+                  CONTENTS
+  4 .ARM          00000008  08000540  08000540  00001540  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  5 .preinit_array 00000000  08000548  08000548  00002004  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  08000548  08000548  00001548  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .fini_array   00000004  0800054c  0800054c  0000154c  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  8 .data         00000004  20000000  08000550  00002000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          00000034  20000004  08000554  00002004  2**2
+                  ALLOC
+ 10 ._user_heap_stack 00000600  20000038  08000554  00002038  2**0
+                  ALLOC
+ 11 .ARM.attributes 00000030  00000000  00000000  00002004  2**0
+                  CONTENTS, READONLY
+ 12 .debug_info   000016c7  00000000  00000000  00002034  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 13 .debug_abbrev 000005c7  00000000  00000000  000036fb  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 14 .debug_aranges 000001d8  00000000  00000000  00003cc8  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .debug_rnglists 0000015b  00000000  00000000  00003ea0  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 16 .debug_macro  00014783  00000000  00000000  00003ffb  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 17 .debug_line   00002460  00000000  00000000  0001877e  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 18 .debug_str    00083200  00000000  00000000  0001abde  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 19 .comment      00000043  00000000  00000000  0009ddde  2**0
+                  CONTENTS, READONLY
+ 20 .debug_frame  000005b4  00000000  00000000  0009de24  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 21 .debug_line_str 00000051  00000000  00000000  0009e3d8  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+
+Disassembly of section .text:
+
+08000198 <__do_global_dtors_aux>:
+ 8000198:	b510      	push	{r4, lr}
+ 800019a:	4c05      	ldr	r4, [pc, #20]	@ (80001b0 <__do_global_dtors_aux+0x18>)
+ 800019c:	7823      	ldrb	r3, [r4, #0]
+ 800019e:	b933      	cbnz	r3, 80001ae <__do_global_dtors_aux+0x16>
+ 80001a0:	4b04      	ldr	r3, [pc, #16]	@ (80001b4 <__do_global_dtors_aux+0x1c>)
+ 80001a2:	b113      	cbz	r3, 80001aa <__do_global_dtors_aux+0x12>
+ 80001a4:	4804      	ldr	r0, [pc, #16]	@ (80001b8 <__do_global_dtors_aux+0x20>)
+ 80001a6:	f3af 8000 	nop.w
+ 80001aa:	2301      	movs	r3, #1
+ 80001ac:	7023      	strb	r3, [r4, #0]
+ 80001ae:	bd10      	pop	{r4, pc}
+ 80001b0:	20000004 	.word	0x20000004
+ 80001b4:	00000000 	.word	0x00000000
+ 80001b8:	08000518 	.word	0x08000518
+
+080001bc <frame_dummy>:
+ 80001bc:	b508      	push	{r3, lr}
+ 80001be:	4b03      	ldr	r3, [pc, #12]	@ (80001cc <frame_dummy+0x10>)
+ 80001c0:	b11b      	cbz	r3, 80001ca <frame_dummy+0xe>
+ 80001c2:	4903      	ldr	r1, [pc, #12]	@ (80001d0 <frame_dummy+0x14>)
+ 80001c4:	4803      	ldr	r0, [pc, #12]	@ (80001d4 <frame_dummy+0x18>)
+ 80001c6:	f3af 8000 	nop.w
+ 80001ca:	bd08      	pop	{r3, pc}
+ 80001cc:	00000000 	.word	0x00000000
+ 80001d0:	20000008 	.word	0x20000008
+ 80001d4:	08000518 	.word	0x08000518
+
+080001d8 <strcmp>:
+ 80001d8:	f810 2b01 	ldrb.w	r2, [r0], #1
+ 80001dc:	f811 3b01 	ldrb.w	r3, [r1], #1
+ 80001e0:	2a01      	cmp	r2, #1
+ 80001e2:	bf28      	it	cs
+ 80001e4:	429a      	cmpcs	r2, r3
+ 80001e6:	d0f7      	beq.n	80001d8 <strcmp>
+ 80001e8:	1ad0      	subs	r0, r2, r3
+ 80001ea:	4770      	bx	lr
+
+080001ec <__NVIC_EnableIRQ>:
+  \details Enables a device specific interrupt in the NVIC interrupt controller.
+  \param [in]      IRQn  Device specific interrupt number.
+  \note    IRQn must not be negative.
+ */
+__STATIC_INLINE void __NVIC_EnableIRQ(IRQn_Type IRQn)
+{
+ 80001ec:	b480      	push	{r7}
+ 80001ee:	b083      	sub	sp, #12
+ 80001f0:	af00      	add	r7, sp, #0
+ 80001f2:	4603      	mov	r3, r0
+ 80001f4:	71fb      	strb	r3, [r7, #7]
+  if ((int32_t)(IRQn) >= 0)
+ 80001f6:	f997 3007 	ldrsb.w	r3, [r7, #7]
+ 80001fa:	2b00      	cmp	r3, #0
+ 80001fc:	db0b      	blt.n	8000216 <__NVIC_EnableIRQ+0x2a>
+  {
+    __COMPILER_BARRIER();
+    NVIC->ISER[(((uint32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)IRQn) & 0x1FUL));
+ 80001fe:	79fb      	ldrb	r3, [r7, #7]
+ 8000200:	f003 021f 	and.w	r2, r3, #31
+ 8000204:	4907      	ldr	r1, [pc, #28]	@ (8000224 <__NVIC_EnableIRQ+0x38>)
+ 8000206:	f997 3007 	ldrsb.w	r3, [r7, #7]
+ 800020a:	095b      	lsrs	r3, r3, #5
+ 800020c:	2001      	movs	r0, #1
+ 800020e:	fa00 f202 	lsl.w	r2, r0, r2
+ 8000212:	f841 2023 	str.w	r2, [r1, r3, lsl #2]
+    __COMPILER_BARRIER();
+  }
+}
+ 8000216:	bf00      	nop
+ 8000218:	370c      	adds	r7, #12
+ 800021a:	46bd      	mov	sp, r7
+ 800021c:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000220:	4770      	bx	lr
+ 8000222:	bf00      	nop
+ 8000224:	e000e100 	.word	0xe000e100
+
+08000228 <main>:
+#define MAX_BUFFER 16
+
+volatile uint8_t rxBuffer[MAX_BUFFER];  // Bộ đệm nhận dữ liệu từ SPI Master
+volatile uint8_t rxIndex = 0;           // Chỉ số ghi dữ liệu vào buffer
+
+int main(void) {
+ 8000228:	b580      	push	{r7, lr}
+ 800022a:	af00      	add	r7, sp, #0
+    SPI1_Slave_Init();  // Khởi tạo SPI1 ở chế độ Slave
+ 800022c:	f000 f81c 	bl	8000268 <SPI1_Slave_Init>
+
+    // Cấu hình PC13 làm output để điều khiển LED
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;        // Bật clock GPIOC
+ 8000230:	4b0b      	ldr	r3, [pc, #44]	@ (8000260 <main+0x38>)
+ 8000232:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
+ 8000234:	4a0a      	ldr	r2, [pc, #40]	@ (8000260 <main+0x38>)
+ 8000236:	f043 0304 	orr.w	r3, r3, #4
+ 800023a:	6313      	str	r3, [r2, #48]	@ 0x30
+    GPIOC->MODER &= ~(3 << (13 * 2));           // Xóa cấu hình cũ
+ 800023c:	4b09      	ldr	r3, [pc, #36]	@ (8000264 <main+0x3c>)
+ 800023e:	681b      	ldr	r3, [r3, #0]
+ 8000240:	4a08      	ldr	r2, [pc, #32]	@ (8000264 <main+0x3c>)
+ 8000242:	f023 6340 	bic.w	r3, r3, #201326592	@ 0xc000000
+ 8000246:	6013      	str	r3, [r2, #0]
+    GPIOC->MODER |= (1 << (13 * 2));            // Đặt PC13 làm output
+ 8000248:	4b06      	ldr	r3, [pc, #24]	@ (8000264 <main+0x3c>)
+ 800024a:	681b      	ldr	r3, [r3, #0]
+ 800024c:	4a05      	ldr	r2, [pc, #20]	@ (8000264 <main+0x3c>)
+ 800024e:	f043 6380 	orr.w	r3, r3, #67108864	@ 0x4000000
+ 8000252:	6013      	str	r3, [r2, #0]
+
+    NVIC_EnableIRQ(SPI1_IRQn);                  // Kích hoạt ngắt SPI1
+ 8000254:	2023      	movs	r0, #35	@ 0x23
+ 8000256:	f7ff ffc9 	bl	80001ec <__NVIC_EnableIRQ>
+
+    while (1) {
+ 800025a:	bf00      	nop
+ 800025c:	e7fd      	b.n	800025a <main+0x32>
+ 800025e:	bf00      	nop
+ 8000260:	40023800 	.word	0x40023800
+ 8000264:	40020800 	.word	0x40020800
+
+08000268 <SPI1_Slave_Init>:
+        // Vòng lặp chính không làm gì, xử lý hoàn toàn trong ngắt SPI
+    }
+}
+
+void SPI1_Slave_Init(void) {
+ 8000268:	b480      	push	{r7}
+ 800026a:	af00      	add	r7, sp, #0
+    // Bật clock cho SPI1 và GPIOA
+    RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;         // SPI1 clock
+ 800026c:	4b1e      	ldr	r3, [pc, #120]	@ (80002e8 <SPI1_Slave_Init+0x80>)
+ 800026e:	6c5b      	ldr	r3, [r3, #68]	@ 0x44
+ 8000270:	4a1d      	ldr	r2, [pc, #116]	@ (80002e8 <SPI1_Slave_Init+0x80>)
+ 8000272:	f443 5380 	orr.w	r3, r3, #4096	@ 0x1000
+ 8000276:	6453      	str	r3, [r2, #68]	@ 0x44
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;        // GPIOA clock
+ 8000278:	4b1b      	ldr	r3, [pc, #108]	@ (80002e8 <SPI1_Slave_Init+0x80>)
+ 800027a:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
+ 800027c:	4a1a      	ldr	r2, [pc, #104]	@ (80002e8 <SPI1_Slave_Init+0x80>)
+ 800027e:	f043 0301 	orr.w	r3, r3, #1
+ 8000282:	6313      	str	r3, [r2, #48]	@ 0x30
+
+    // PA4 (NSS), PA5 (SCK), PA6 (MISO), PA7 (MOSI) → cấu hình Alternate Function
+    GPIOA->MODER &= ~(0x3 << 2*4 | 0x3 << 2*5 | 0x3 << 2*6 | 0x3 << 2*7); // Xóa mode cũ
+ 8000284:	4b19      	ldr	r3, [pc, #100]	@ (80002ec <SPI1_Slave_Init+0x84>)
+ 8000286:	681b      	ldr	r3, [r3, #0]
+ 8000288:	4a18      	ldr	r2, [pc, #96]	@ (80002ec <SPI1_Slave_Init+0x84>)
+ 800028a:	f423 437f 	bic.w	r3, r3, #65280	@ 0xff00
+ 800028e:	6013      	str	r3, [r2, #0]
+    GPIOA->MODER |=  (0x2 << 2*4) | (0x2 << 2*5) | (0x2 << 2*6) | (0x2 << 2*7); // AF mode
+ 8000290:	4b16      	ldr	r3, [pc, #88]	@ (80002ec <SPI1_Slave_Init+0x84>)
+ 8000292:	681b      	ldr	r3, [r3, #0]
+ 8000294:	4a15      	ldr	r2, [pc, #84]	@ (80002ec <SPI1_Slave_Init+0x84>)
+ 8000296:	f443 432a 	orr.w	r3, r3, #43520	@ 0xaa00
+ 800029a:	6013      	str	r3, [r2, #0]
+
+    // Gán Alternate Function 5 cho các chân SPI1
+    GPIOA->AFR[0] &= ~(0xF << 4*4 | 0xF << 4*5 | 0xF << 4*6 | 0xF << 4*7); // clear trước
+ 800029c:	4b13      	ldr	r3, [pc, #76]	@ (80002ec <SPI1_Slave_Init+0x84>)
+ 800029e:	6a1b      	ldr	r3, [r3, #32]
+ 80002a0:	4a12      	ldr	r2, [pc, #72]	@ (80002ec <SPI1_Slave_Init+0x84>)
+ 80002a2:	b29b      	uxth	r3, r3
+ 80002a4:	6213      	str	r3, [r2, #32]
+    GPIOA->AFR[0] |=  (0x5 << 4*4) | (0x5 << 4*5) | (0x5 << 4*6) | (0x5 << 4*7);
+ 80002a6:	4b11      	ldr	r3, [pc, #68]	@ (80002ec <SPI1_Slave_Init+0x84>)
+ 80002a8:	6a1b      	ldr	r3, [r3, #32]
+ 80002aa:	4a10      	ldr	r2, [pc, #64]	@ (80002ec <SPI1_Slave_Init+0x84>)
+ 80002ac:	f043 43aa 	orr.w	r3, r3, #1426063360	@ 0x55000000
+ 80002b0:	f443 03aa 	orr.w	r3, r3, #5570560	@ 0x550000
+ 80002b4:	6213      	str	r3, [r2, #32]
+
+    // ==== CẤU HÌNH SPI1 Ở CHẾ ĐỘ SLAVE ====
+    SPI1->CR1 = 0; // Xóa toàn bộ cấu hình trước đó
+ 80002b6:	4b0e      	ldr	r3, [pc, #56]	@ (80002f0 <SPI1_Slave_Init+0x88>)
+ 80002b8:	2200      	movs	r2, #0
+ 80002ba:	601a      	str	r2, [r3, #0]
+
+    // Cấu hình:
+    // - Chế độ Slave (MSTR = 0)
+    // - Không dùng quản lý phần mềm NSS (SSM = 0)
+    // - Dùng mode 0 (CPOL = 0, CPHA = 0)
+    SPI1->CR1 &= ~(SPI_CR1_MSTR | SPI_CR1_SSM | SPI_CR1_CPOL | SPI_CR1_CPHA);
+ 80002bc:	4b0c      	ldr	r3, [pc, #48]	@ (80002f0 <SPI1_Slave_Init+0x88>)
+ 80002be:	681b      	ldr	r3, [r3, #0]
+ 80002c0:	4a0b      	ldr	r2, [pc, #44]	@ (80002f0 <SPI1_Slave_Init+0x88>)
+ 80002c2:	f423 7301 	bic.w	r3, r3, #516	@ 0x204
+ 80002c6:	f023 0303 	bic.w	r3, r3, #3
+ 80002ca:	6013      	str	r3, [r2, #0]
+
+    // Cho phép ngắt khi có dữ liệu nhận được (RXNE)
+    SPI1->CR2 = SPI_CR2_RXNEIE;
+ 80002cc:	4b08      	ldr	r3, [pc, #32]	@ (80002f0 <SPI1_Slave_Init+0x88>)
+ 80002ce:	2240      	movs	r2, #64	@ 0x40
+ 80002d0:	605a      	str	r2, [r3, #4]
+
+    // Bật SPI
+    SPI1->CR1 |= SPI_CR1_SPE;
+ 80002d2:	4b07      	ldr	r3, [pc, #28]	@ (80002f0 <SPI1_Slave_Init+0x88>)
+ 80002d4:	681b      	ldr	r3, [r3, #0]
+ 80002d6:	4a06      	ldr	r2, [pc, #24]	@ (80002f0 <SPI1_Slave_Init+0x88>)
+ 80002d8:	f043 0340 	orr.w	r3, r3, #64	@ 0x40
+ 80002dc:	6013      	str	r3, [r2, #0]
+}
+ 80002de:	bf00      	nop
+ 80002e0:	46bd      	mov	sp, r7
+ 80002e2:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80002e6:	4770      	bx	lr
+ 80002e8:	40023800 	.word	0x40023800
+ 80002ec:	40020000 	.word	0x40020000
+ 80002f0:	40013000 	.word	0x40013000
+
+080002f4 <SPI1_IRQHandler>:
+
+// Trình xử lý ngắt SPI1
+void SPI1_IRQHandler(void) {
+ 80002f4:	b580      	push	{r7, lr}
+ 80002f6:	b082      	sub	sp, #8
+ 80002f8:	af00      	add	r7, sp, #0
+    if (SPI1->SR & SPI_SR_RXNE) { // Nếu có dữ liệu nhận
+ 80002fa:	4b2f      	ldr	r3, [pc, #188]	@ (80003b8 <SPI1_IRQHandler+0xc4>)
+ 80002fc:	689b      	ldr	r3, [r3, #8]
+ 80002fe:	f003 0301 	and.w	r3, r3, #1
+ 8000302:	2b00      	cmp	r3, #0
+ 8000304:	d054      	beq.n	80003b0 <SPI1_IRQHandler+0xbc>
+        uint8_t data = SPI1->DR;  // Đọc dữ liệu từ thanh ghi DR
+ 8000306:	4b2c      	ldr	r3, [pc, #176]	@ (80003b8 <SPI1_IRQHandler+0xc4>)
+ 8000308:	68db      	ldr	r3, [r3, #12]
+ 800030a:	71fb      	strb	r3, [r7, #7]
+
+        if(data != 0xFF) {  // kiểm tra data không phải dummy
+ 800030c:	79fb      	ldrb	r3, [r7, #7]
+ 800030e:	2bff      	cmp	r3, #255	@ 0xff
+ 8000310:	d04c      	beq.n	80003ac <SPI1_IRQHandler+0xb8>
+            // Lưu dữ liệu vào buffer nếu còn chỗ
+            if (rxIndex < MAX_BUFFER - 1) {
+ 8000312:	4b2a      	ldr	r3, [pc, #168]	@ (80003bc <SPI1_IRQHandler+0xc8>)
+ 8000314:	781b      	ldrb	r3, [r3, #0]
+ 8000316:	b2db      	uxtb	r3, r3
+ 8000318:	2b0e      	cmp	r3, #14
+ 800031a:	d80a      	bhi.n	8000332 <SPI1_IRQHandler+0x3e>
+                rxBuffer[rxIndex++] = data;
+ 800031c:	4b27      	ldr	r3, [pc, #156]	@ (80003bc <SPI1_IRQHandler+0xc8>)
+ 800031e:	781b      	ldrb	r3, [r3, #0]
+ 8000320:	b2db      	uxtb	r3, r3
+ 8000322:	1c5a      	adds	r2, r3, #1
+ 8000324:	b2d1      	uxtb	r1, r2
+ 8000326:	4a25      	ldr	r2, [pc, #148]	@ (80003bc <SPI1_IRQHandler+0xc8>)
+ 8000328:	7011      	strb	r1, [r2, #0]
+ 800032a:	4619      	mov	r1, r3
+ 800032c:	4a24      	ldr	r2, [pc, #144]	@ (80003c0 <SPI1_IRQHandler+0xcc>)
+ 800032e:	79fb      	ldrb	r3, [r7, #7]
+ 8000330:	5453      	strb	r3, [r2, r1]
+            }
+
+            // Nếu gặp ký tự kết thúc chuỗi (ví dụ '\n') thì xử lý lệnh
+            if (data == '\n') {
+ 8000332:	79fb      	ldrb	r3, [r7, #7]
+ 8000334:	2b0a      	cmp	r3, #10
+ 8000336:	d13b      	bne.n	80003b0 <SPI1_IRQHandler+0xbc>
+                rxBuffer[rxIndex - 1] = '\0'; // Ghi đè '\n' bằng null-terminator
+ 8000338:	4b20      	ldr	r3, [pc, #128]	@ (80003bc <SPI1_IRQHandler+0xc8>)
+ 800033a:	781b      	ldrb	r3, [r3, #0]
+ 800033c:	b2db      	uxtb	r3, r3
+ 800033e:	3b01      	subs	r3, #1
+ 8000340:	4a1f      	ldr	r2, [pc, #124]	@ (80003c0 <SPI1_IRQHandler+0xcc>)
+ 8000342:	2100      	movs	r1, #0
+ 8000344:	54d1      	strb	r1, [r2, r3]
+
+                // So sánh chuỗi lệnh đã nhận
+                if (strcmp((char*)rxBuffer, "on led") == 0) {
+ 8000346:	491f      	ldr	r1, [pc, #124]	@ (80003c4 <SPI1_IRQHandler+0xd0>)
+ 8000348:	481d      	ldr	r0, [pc, #116]	@ (80003c0 <SPI1_IRQHandler+0xcc>)
+ 800034a:	f7ff ff45 	bl	80001d8 <strcmp>
+ 800034e:	4603      	mov	r3, r0
+ 8000350:	2b00      	cmp	r3, #0
+ 8000352:	d110      	bne.n	8000376 <SPI1_IRQHandler+0x82>
+                    GPIOC->ODR |= (1 << 13);  // Bật LED PC13
+ 8000354:	4b1c      	ldr	r3, [pc, #112]	@ (80003c8 <SPI1_IRQHandler+0xd4>)
+ 8000356:	695b      	ldr	r3, [r3, #20]
+ 8000358:	4a1b      	ldr	r2, [pc, #108]	@ (80003c8 <SPI1_IRQHandler+0xd4>)
+ 800035a:	f443 5300 	orr.w	r3, r3, #8192	@ 0x2000
+ 800035e:	6153      	str	r3, [r2, #20]
+
+                    // Gửi phản hồi  trạng thái led 0x01 cho Master
+                    while (!(SPI1->SR & SPI_SR_TXE)); // Chờ TXE
+ 8000360:	bf00      	nop
+ 8000362:	4b15      	ldr	r3, [pc, #84]	@ (80003b8 <SPI1_IRQHandler+0xc4>)
+ 8000364:	689b      	ldr	r3, [r3, #8]
+ 8000366:	f003 0302 	and.w	r3, r3, #2
+ 800036a:	2b00      	cmp	r3, #0
+ 800036c:	d0f9      	beq.n	8000362 <SPI1_IRQHandler+0x6e>
+                    SPI1->DR = 0x01;
+ 800036e:	4b12      	ldr	r3, [pc, #72]	@ (80003b8 <SPI1_IRQHandler+0xc4>)
+ 8000370:	2201      	movs	r2, #1
+ 8000372:	60da      	str	r2, [r3, #12]
+ 8000374:	e016      	b.n	80003a4 <SPI1_IRQHandler+0xb0>
+                } else if (strcmp((char*)rxBuffer, "off led") == 0) {
+ 8000376:	4915      	ldr	r1, [pc, #84]	@ (80003cc <SPI1_IRQHandler+0xd8>)
+ 8000378:	4811      	ldr	r0, [pc, #68]	@ (80003c0 <SPI1_IRQHandler+0xcc>)
+ 800037a:	f7ff ff2d 	bl	80001d8 <strcmp>
+ 800037e:	4603      	mov	r3, r0
+ 8000380:	2b00      	cmp	r3, #0
+ 8000382:	d10f      	bne.n	80003a4 <SPI1_IRQHandler+0xb0>
+                    GPIOC->ODR &= ~(1 << 13); // Tắt LED PC13
+ 8000384:	4b10      	ldr	r3, [pc, #64]	@ (80003c8 <SPI1_IRQHandler+0xd4>)
+ 8000386:	695b      	ldr	r3, [r3, #20]
+ 8000388:	4a0f      	ldr	r2, [pc, #60]	@ (80003c8 <SPI1_IRQHandler+0xd4>)
+ 800038a:	f423 5300 	bic.w	r3, r3, #8192	@ 0x2000
+ 800038e:	6153      	str	r3, [r2, #20]
+
+                    // Gửi phản hồi trạng thái led 0x00 cho Master
+                    while (!(SPI1->SR & SPI_SR_TXE));
+ 8000390:	bf00      	nop
+ 8000392:	4b09      	ldr	r3, [pc, #36]	@ (80003b8 <SPI1_IRQHandler+0xc4>)
+ 8000394:	689b      	ldr	r3, [r3, #8]
+ 8000396:	f003 0302 	and.w	r3, r3, #2
+ 800039a:	2b00      	cmp	r3, #0
+ 800039c:	d0f9      	beq.n	8000392 <SPI1_IRQHandler+0x9e>
+                    SPI1->DR = 0x00;
+ 800039e:	4b06      	ldr	r3, [pc, #24]	@ (80003b8 <SPI1_IRQHandler+0xc4>)
+ 80003a0:	2200      	movs	r2, #0
+ 80003a2:	60da      	str	r2, [r3, #12]
+                }
+
+                rxIndex = 0; // Reset buffer sau khi xử lý xong lệnh
+ 80003a4:	4b05      	ldr	r3, [pc, #20]	@ (80003bc <SPI1_IRQHandler+0xc8>)
+ 80003a6:	2200      	movs	r2, #0
+ 80003a8:	701a      	strb	r2, [r3, #0]
+        else {
+            // Nếu là dữ liệu rác (ví dụ 0xFF , đây là byte master gửi để tạo sck, slave gửi byte đã đc nạp vào DR trước đó), đọc bỏ
+            (void)SPI1->DR;
+        }
+    }
+}
+ 80003aa:	e001      	b.n	80003b0 <SPI1_IRQHandler+0xbc>
+            (void)SPI1->DR;
+ 80003ac:	4b02      	ldr	r3, [pc, #8]	@ (80003b8 <SPI1_IRQHandler+0xc4>)
+ 80003ae:	68db      	ldr	r3, [r3, #12]
+}
+ 80003b0:	bf00      	nop
+ 80003b2:	3708      	adds	r7, #8
+ 80003b4:	46bd      	mov	sp, r7
+ 80003b6:	bd80      	pop	{r7, pc}
+ 80003b8:	40013000 	.word	0x40013000
+ 80003bc:	20000030 	.word	0x20000030
+ 80003c0:	20000020 	.word	0x20000020
+ 80003c4:	08000530 	.word	0x08000530
+ 80003c8:	40020800 	.word	0x40020800
+ 80003cc:	08000538 	.word	0x08000538
+
+080003d0 <NMI_Handler>:
+/******************************************************************************/
+/**
+  * @brief This function handles Non maskable interrupt.
+  */
+void NMI_Handler(void)
+{
+ 80003d0:	b480      	push	{r7}
+ 80003d2:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+
+  /* USER CODE END NonMaskableInt_IRQn 0 */
+  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+   while (1)
+ 80003d4:	bf00      	nop
+ 80003d6:	e7fd      	b.n	80003d4 <NMI_Handler+0x4>
+
+080003d8 <HardFault_Handler>:
+
+/**
+  * @brief This function handles Hard fault interrupt.
+  */
+void HardFault_Handler(void)
+{
+ 80003d8:	b480      	push	{r7}
+ 80003da:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN HardFault_IRQn 0 */
+
+  /* USER CODE END HardFault_IRQn 0 */
+  while (1)
+ 80003dc:	bf00      	nop
+ 80003de:	e7fd      	b.n	80003dc <HardFault_Handler+0x4>
+
+080003e0 <MemManage_Handler>:
+
+/**
+  * @brief This function handles Memory management fault.
+  */
+void MemManage_Handler(void)
+{
+ 80003e0:	b480      	push	{r7}
+ 80003e2:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+
+  /* USER CODE END MemoryManagement_IRQn 0 */
+  while (1)
+ 80003e4:	bf00      	nop
+ 80003e6:	e7fd      	b.n	80003e4 <MemManage_Handler+0x4>
+
+080003e8 <BusFault_Handler>:
+
+/**
+  * @brief This function handles Pre-fetch fault, memory access fault.
+  */
+void BusFault_Handler(void)
+{
+ 80003e8:	b480      	push	{r7}
+ 80003ea:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN BusFault_IRQn 0 */
+
+  /* USER CODE END BusFault_IRQn 0 */
+  while (1)
+ 80003ec:	bf00      	nop
+ 80003ee:	e7fd      	b.n	80003ec <BusFault_Handler+0x4>
+
+080003f0 <UsageFault_Handler>:
+
+/**
+  * @brief This function handles Undefined instruction or illegal state.
+  */
+void UsageFault_Handler(void)
+{
+ 80003f0:	b480      	push	{r7}
+ 80003f2:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN UsageFault_IRQn 0 */
+
+  /* USER CODE END UsageFault_IRQn 0 */
+  while (1)
+ 80003f4:	bf00      	nop
+ 80003f6:	e7fd      	b.n	80003f4 <UsageFault_Handler+0x4>
+
+080003f8 <SVC_Handler>:
+
+/**
+  * @brief This function handles System service call via SWI instruction.
+  */
+void SVC_Handler(void)
+{
+ 80003f8:	b480      	push	{r7}
+ 80003fa:	af00      	add	r7, sp, #0
+
+  /* USER CODE END SVCall_IRQn 0 */
+  /* USER CODE BEGIN SVCall_IRQn 1 */
+
+  /* USER CODE END SVCall_IRQn 1 */
+}
+ 80003fc:	bf00      	nop
+ 80003fe:	46bd      	mov	sp, r7
+ 8000400:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000404:	4770      	bx	lr
+
+08000406 <DebugMon_Handler>:
+
+/**
+  * @brief This function handles Debug monitor.
+  */
+void DebugMon_Handler(void)
+{
+ 8000406:	b480      	push	{r7}
+ 8000408:	af00      	add	r7, sp, #0
+
+  /* USER CODE END DebugMonitor_IRQn 0 */
+  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+
+  /* USER CODE END DebugMonitor_IRQn 1 */
+}
+ 800040a:	bf00      	nop
+ 800040c:	46bd      	mov	sp, r7
+ 800040e:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000412:	4770      	bx	lr
+
+08000414 <PendSV_Handler>:
+
+/**
+  * @brief This function handles Pendable request for system service.
+  */
+void PendSV_Handler(void)
+{
+ 8000414:	b480      	push	{r7}
+ 8000416:	af00      	add	r7, sp, #0
+
+  /* USER CODE END PendSV_IRQn 0 */
+  /* USER CODE BEGIN PendSV_IRQn 1 */
+
+  /* USER CODE END PendSV_IRQn 1 */
+}
+ 8000418:	bf00      	nop
+ 800041a:	46bd      	mov	sp, r7
+ 800041c:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000420:	4770      	bx	lr
+
+08000422 <SysTick_Handler>:
+
+/**
+  * @brief This function handles System tick timer.
+  */
+void SysTick_Handler(void)
+{
+ 8000422:	b580      	push	{r7, lr}
+ 8000424:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+ 8000426:	f000 f83f 	bl	80004a8 <HAL_IncTick>
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
+}
+ 800042a:	bf00      	nop
+ 800042c:	bd80      	pop	{r7, pc}
+	...
+
+08000430 <SystemInit>:
+  *         configuration.
+  * @param  None
+  * @retval None
+  */
+void SystemInit(void)
+{
+ 8000430:	b480      	push	{r7}
+ 8000432:	af00      	add	r7, sp, #0
+  /* FPU settings ------------------------------------------------------------*/
+  #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+    SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */
+ 8000434:	4b06      	ldr	r3, [pc, #24]	@ (8000450 <SystemInit+0x20>)
+ 8000436:	f8d3 3088 	ldr.w	r3, [r3, #136]	@ 0x88
+ 800043a:	4a05      	ldr	r2, [pc, #20]	@ (8000450 <SystemInit+0x20>)
+ 800043c:	f443 0370 	orr.w	r3, r3, #15728640	@ 0xf00000
+ 8000440:	f8c2 3088 	str.w	r3, [r2, #136]	@ 0x88
+
+  /* Configure the Vector Table location -------------------------------------*/
+#if defined(USER_VECT_TAB_ADDRESS)
+  SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
+#endif /* USER_VECT_TAB_ADDRESS */
+}
+ 8000444:	bf00      	nop
+ 8000446:	46bd      	mov	sp, r7
+ 8000448:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800044c:	4770      	bx	lr
+ 800044e:	bf00      	nop
+ 8000450:	e000ed00 	.word	0xe000ed00
+
+08000454 <Reset_Handler>:
+
+    .section  .text.Reset_Handler
+  .weak  Reset_Handler
+  .type  Reset_Handler, %function
+Reset_Handler:  
+  ldr   sp, =_estack    		 /* set stack pointer */
+ 8000454:	f8df d034 	ldr.w	sp, [pc, #52]	@ 800048c <LoopFillZerobss+0xe>
+
+/* Call the clock system initialization function.*/
+  bl  SystemInit   
+ 8000458:	f7ff ffea 	bl	8000430 <SystemInit>
+
+/* Copy the data segment initializers from flash to SRAM */  
+  ldr r0, =_sdata
+ 800045c:	480c      	ldr	r0, [pc, #48]	@ (8000490 <LoopFillZerobss+0x12>)
+  ldr r1, =_edata
+ 800045e:	490d      	ldr	r1, [pc, #52]	@ (8000494 <LoopFillZerobss+0x16>)
+  ldr r2, =_sidata
+ 8000460:	4a0d      	ldr	r2, [pc, #52]	@ (8000498 <LoopFillZerobss+0x1a>)
+  movs r3, #0
+ 8000462:	2300      	movs	r3, #0
+  b LoopCopyDataInit
+ 8000464:	e002      	b.n	800046c <LoopCopyDataInit>
+
+08000466 <CopyDataInit>:
+
+CopyDataInit:
+  ldr r4, [r2, r3]
+ 8000466:	58d4      	ldr	r4, [r2, r3]
+  str r4, [r0, r3]
+ 8000468:	50c4      	str	r4, [r0, r3]
+  adds r3, r3, #4
+ 800046a:	3304      	adds	r3, #4
+
+0800046c <LoopCopyDataInit>:
+
+LoopCopyDataInit:
+  adds r4, r0, r3
+ 800046c:	18c4      	adds	r4, r0, r3
+  cmp r4, r1
+ 800046e:	428c      	cmp	r4, r1
+  bcc CopyDataInit
+ 8000470:	d3f9      	bcc.n	8000466 <CopyDataInit>
+  
+/* Zero fill the bss segment. */
+  ldr r2, =_sbss
+ 8000472:	4a0a      	ldr	r2, [pc, #40]	@ (800049c <LoopFillZerobss+0x1e>)
+  ldr r4, =_ebss
+ 8000474:	4c0a      	ldr	r4, [pc, #40]	@ (80004a0 <LoopFillZerobss+0x22>)
+  movs r3, #0
+ 8000476:	2300      	movs	r3, #0
+  b LoopFillZerobss
+ 8000478:	e001      	b.n	800047e <LoopFillZerobss>
+
+0800047a <FillZerobss>:
+
+FillZerobss:
+  str  r3, [r2]
+ 800047a:	6013      	str	r3, [r2, #0]
+  adds r2, r2, #4
+ 800047c:	3204      	adds	r2, #4
+
+0800047e <LoopFillZerobss>:
+
+LoopFillZerobss:
+  cmp r2, r4
+ 800047e:	42a2      	cmp	r2, r4
+  bcc FillZerobss
+ 8000480:	d3fb      	bcc.n	800047a <FillZerobss>
+
+/* Call static constructors */
+    bl __libc_init_array
+ 8000482:	f000 f825 	bl	80004d0 <__libc_init_array>
+/* Call the application's entry point.*/
+  bl  main
+ 8000486:	f7ff fecf 	bl	8000228 <main>
+  bx  lr    
+ 800048a:	4770      	bx	lr
+  ldr   sp, =_estack    		 /* set stack pointer */
+ 800048c:	20020000 	.word	0x20020000
+  ldr r0, =_sdata
+ 8000490:	20000000 	.word	0x20000000
+  ldr r1, =_edata
+ 8000494:	20000004 	.word	0x20000004
+  ldr r2, =_sidata
+ 8000498:	08000550 	.word	0x08000550
+  ldr r2, =_sbss
+ 800049c:	20000004 	.word	0x20000004
+  ldr r4, =_ebss
+ 80004a0:	20000038 	.word	0x20000038
+
+080004a4 <ADC_IRQHandler>:
+ * @retval None       
+*/
+    .section  .text.Default_Handler,"ax",%progbits
+Default_Handler:
+Infinite_Loop:
+  b  Infinite_Loop
+ 80004a4:	e7fe      	b.n	80004a4 <ADC_IRQHandler>
+	...
+
+080004a8 <HAL_IncTick>:
+ * @note This function is declared as __weak to be overwritten in case of other 
+  *      implementations in user file.
+  * @retval None
+  */
+__weak void HAL_IncTick(void)
+{
+ 80004a8:	b480      	push	{r7}
+ 80004aa:	af00      	add	r7, sp, #0
+  uwTick += uwTickFreq;
+ 80004ac:	4b06      	ldr	r3, [pc, #24]	@ (80004c8 <HAL_IncTick+0x20>)
+ 80004ae:	781b      	ldrb	r3, [r3, #0]
+ 80004b0:	461a      	mov	r2, r3
+ 80004b2:	4b06      	ldr	r3, [pc, #24]	@ (80004cc <HAL_IncTick+0x24>)
+ 80004b4:	681b      	ldr	r3, [r3, #0]
+ 80004b6:	4413      	add	r3, r2
+ 80004b8:	4a04      	ldr	r2, [pc, #16]	@ (80004cc <HAL_IncTick+0x24>)
+ 80004ba:	6013      	str	r3, [r2, #0]
+}
+ 80004bc:	bf00      	nop
+ 80004be:	46bd      	mov	sp, r7
+ 80004c0:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80004c4:	4770      	bx	lr
+ 80004c6:	bf00      	nop
+ 80004c8:	20000000 	.word	0x20000000
+ 80004cc:	20000034 	.word	0x20000034
+
+080004d0 <__libc_init_array>:
+ 80004d0:	b570      	push	{r4, r5, r6, lr}
+ 80004d2:	4d0d      	ldr	r5, [pc, #52]	@ (8000508 <__libc_init_array+0x38>)
+ 80004d4:	4c0d      	ldr	r4, [pc, #52]	@ (800050c <__libc_init_array+0x3c>)
+ 80004d6:	1b64      	subs	r4, r4, r5
+ 80004d8:	10a4      	asrs	r4, r4, #2
+ 80004da:	2600      	movs	r6, #0
+ 80004dc:	42a6      	cmp	r6, r4
+ 80004de:	d109      	bne.n	80004f4 <__libc_init_array+0x24>
+ 80004e0:	4d0b      	ldr	r5, [pc, #44]	@ (8000510 <__libc_init_array+0x40>)
+ 80004e2:	4c0c      	ldr	r4, [pc, #48]	@ (8000514 <__libc_init_array+0x44>)
+ 80004e4:	f000 f818 	bl	8000518 <_init>
+ 80004e8:	1b64      	subs	r4, r4, r5
+ 80004ea:	10a4      	asrs	r4, r4, #2
+ 80004ec:	2600      	movs	r6, #0
+ 80004ee:	42a6      	cmp	r6, r4
+ 80004f0:	d105      	bne.n	80004fe <__libc_init_array+0x2e>
+ 80004f2:	bd70      	pop	{r4, r5, r6, pc}
+ 80004f4:	f855 3b04 	ldr.w	r3, [r5], #4
+ 80004f8:	4798      	blx	r3
+ 80004fa:	3601      	adds	r6, #1
+ 80004fc:	e7ee      	b.n	80004dc <__libc_init_array+0xc>
+ 80004fe:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8000502:	4798      	blx	r3
+ 8000504:	3601      	adds	r6, #1
+ 8000506:	e7f2      	b.n	80004ee <__libc_init_array+0x1e>
+ 8000508:	08000548 	.word	0x08000548
+ 800050c:	08000548 	.word	0x08000548
+ 8000510:	08000548 	.word	0x08000548
+ 8000514:	0800054c 	.word	0x0800054c
+
+08000518 <_init>:
+ 8000518:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800051a:	bf00      	nop
+ 800051c:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 800051e:	bc08      	pop	{r3}
+ 8000520:	469e      	mov	lr, r3
+ 8000522:	4770      	bx	lr
+
+08000524 <_fini>:
+ 8000524:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000526:	bf00      	nop
+ 8000528:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 800052a:	bc08      	pop	{r3}
+ 800052c:	469e      	mov	lr, r3
+ 800052e:	4770      	bx	lr
